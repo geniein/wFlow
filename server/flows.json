@@ -1,0 +1,197 @@
+{
+  "id": "flow-1",
+  "name": "Flow 1",
+  "nodes": [
+    {
+      "id": "inject-1",
+      "type": "injectNode",
+      "position": {
+        "x": 82.24137931034483,
+        "y": 150
+      },
+      "data": {
+        "label": "timestamp",
+        "type": "inject",
+        "payloadType": "date",
+        "payload": "",
+        "topic": "demo/timestamp",
+        "repeat": 0,
+        "once": false,
+        "status": {
+          "fill": "green",
+          "shape": "dot",
+          "text": "1792340472871"
+        }
+      },
+      "measured": {
+        "width": 150,
+        "height": 36
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "function-1",
+      "type": "functionNode",
+      "position": {
+        "x": 367.5689655172414,
+        "y": 164.20689655172413
+      },
+      "data": {
+        "label": "format payload",
+        "type": "function",
+        "code": "// Modify msg properties\nmsg.payload = {\n  receivedTime: new Date(msg.payload).toLocaleTimeString(),\n  message: \"Hello from Node-RED in React Flow!\",\n  randomScore: Math.floor(Math.random() * 100)\n};\nreturn msg;",
+        "status": {
+          "fill": "green",
+          "shape": "dot",
+          "text": "success"
+        }
+      },
+      "measured": {
+        "width": 150,
+        "height": 36
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "switch-1",
+      "type": "switchNode",
+      "position": {
+        "x": 680,
+        "y": 150
+      },
+      "data": {
+        "label": "check score",
+        "type": "switch",
+        "rules": [
+          {
+            "property": "payload.randomScore",
+            "operator": "gt",
+            "value": "50"
+          },
+          {
+            "property": "payload.randomScore",
+            "operator": "else",
+            "value": ""
+          }
+        ],
+        "status": {
+          "fill": "green",
+          "shape": "dot",
+          "text": "matched: 1"
+        }
+      },
+      "measured": {
+        "width": 150,
+        "height": 48
+      }
+    },
+    {
+      "id": "debug-high",
+      "type": "debugNode",
+      "position": {
+        "x": 980,
+        "y": 100
+      },
+      "data": {
+        "label": "score > 50 (High)",
+        "type": "debug",
+        "complete": false,
+        "active": true
+      },
+      "measured": {
+        "width": 150,
+        "height": 36
+      }
+    },
+    {
+      "id": "debug-low",
+      "type": "debugNode",
+      "position": {
+        "x": 980,
+        "y": 220
+      },
+      "data": {
+        "label": "score <= 50 (Low)",
+        "type": "debug",
+        "complete": false,
+        "active": true,
+        "status": {
+          "fill": "green",
+          "shape": "dot",
+          "text": "{\"receivedTime\":\"..."
+        }
+      },
+      "measured": {
+        "width": 150,
+        "height": 36
+      }
+    },
+    {
+      "id": "debug-mve19ad3",
+      "type": "debugNode",
+      "position": {
+        "x": 664.7241379310345,
+        "y": 40.37068965517245
+      },
+      "data": {
+        "label": "msg.payload",
+        "type": "debug",
+        "complete": false,
+        "active": true
+      },
+      "measured": {
+        "width": 150,
+        "height": 36
+      },
+      "selected": false,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-inject-func",
+      "source": "inject-1",
+      "sourceHandle": "output_0",
+      "target": "function-1",
+      "targetHandle": "input",
+      "className": ""
+    },
+    {
+      "id": "e-func-switch",
+      "source": "function-1",
+      "sourceHandle": "output_0",
+      "target": "switch-1",
+      "targetHandle": "input",
+      "className": ""
+    },
+    {
+      "id": "e-switch-debug1",
+      "source": "switch-1",
+      "sourceHandle": "output_0",
+      "target": "debug-high",
+      "targetHandle": "input"
+    },
+    {
+      "id": "e-switch-debug2",
+      "source": "switch-1",
+      "sourceHandle": "output_1",
+      "target": "debug-low",
+      "targetHandle": "input",
+      "className": ""
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#64748b"
+      },
+      "source": "function-1",
+      "sourceHandle": "output_0",
+      "target": "debug-mve19ad3",
+      "targetHandle": "input",
+      "id": "xy-edge__function-1output_0-debug-mve19ad3input"
+    }
+  ]
+}
